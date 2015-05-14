@@ -198,4 +198,40 @@ BOOST_AUTO_TEST_CASE(PlusTests)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(IteratorCheck)
+{
+	{
+		CMyString str1("string");
+		int i = 0;
+		for (auto it = str1.begin(); it != str1.end(); it++, i++)
+		{
+			BOOST_CHECK_EQUAL(str1[i], *it);
+			*it = 'w';
+		}
+		BOOST_CHECK_EQUAL(i, str1.GetLength());
+		BOOST_CHECK_EQUAL(str1, "wwwwww");
+	}
+
+	{
+		CMyString str1("string");
+		int i = 0;
+		for (auto it = str1.crbegin(); it != str1.crend(); it++, i++)
+		{
+			BOOST_CHECK_EQUAL(str1[str1.GetLength() - i - 1], *it);
+		}
+		BOOST_CHECK_EQUAL(i, str1.GetLength());
+		BOOST_CHECK_EQUAL(str1, "string");
+	}
+
+	{
+		CMyString str1("string");
+		int i = 0;
+		for (auto c : str1)
+		{
+			BOOST_CHECK_EQUAL(str1[i++], c);
+		}
+		BOOST_CHECK_EQUAL(i, str1.GetLength());
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()

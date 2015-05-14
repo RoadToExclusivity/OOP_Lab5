@@ -23,6 +23,112 @@ void CMyString::ReallocMemory(size_t newSize)
 	}
 }
 
+CMyString::iterator::iterator(pointer ptr)
+	:ptr_(ptr)
+{
+}
+
+CMyString::iterator::self_type& CMyString::iterator::operator++()
+{
+	ptr_++; 
+	return *this;
+}
+
+CMyString::iterator::self_type CMyString::iterator::operator++(int junk)
+{
+	self_type i = *this;
+	ptr_++; 
+
+	return i;
+}
+
+CMyString::iterator::self_type& CMyString::iterator::operator--()
+{
+	ptr_--;
+	return *this;
+}
+
+CMyString::iterator::self_type CMyString::iterator::operator--(int junk)
+{
+	self_type i = *this;
+	ptr_--;
+
+	return i;
+}
+
+CMyString::iterator::value_type& CMyString::iterator::operator*() const
+{ 
+	return *ptr_; 
+}
+
+CMyString::iterator::value_type* CMyString::iterator::operator->() const
+{ 
+	return ptr_;
+}
+
+bool CMyString::iterator::operator==(const self_type& rhs) const
+{ 
+	return ptr_ == rhs.ptr_; 
+}
+
+bool CMyString::iterator::operator!=(const self_type& rhs) const
+{ 
+	return ptr_ != rhs.ptr_; 
+}
+
+CMyString::const_iterator::const_iterator(pointer ptr)
+	:ptr_(ptr)
+{
+}
+
+CMyString::const_iterator::self_type& CMyString::const_iterator::operator++()
+{
+	ptr_++;
+
+	return *this;
+}
+
+CMyString::const_iterator::self_type CMyString::const_iterator::operator++(int junk)
+{
+	self_type i = *this;
+	ptr_++;
+	return i;
+}
+
+CMyString::const_iterator::self_type& CMyString::const_iterator::operator--()
+{
+	ptr_--;
+	return *this;
+}
+
+CMyString::const_iterator::self_type CMyString::const_iterator::operator--(int junk)
+{
+	self_type i = *this;
+	ptr_--;
+
+	return i;
+}
+
+const CMyString::const_iterator::value_type& CMyString::const_iterator::operator*() const
+{
+	return *ptr_;
+}
+
+const CMyString::const_iterator::value_type* CMyString::const_iterator::operator->() const
+{
+	return ptr_;
+}
+
+bool CMyString::const_iterator::operator==(const self_type& rhs) const
+{
+	return ptr_ == rhs.ptr_;
+}
+
+bool CMyString::const_iterator::operator!=(const self_type& rhs) const
+{
+	return ptr_ != rhs.ptr_;
+}
+
 CMyString::CMyString()
 	: m_length(0), m_string(nullptr), m_curBufferSize(1)
 {
@@ -157,13 +263,13 @@ CMyString& CMyString::operator += (const CMyString &str)
 
 char CMyString::operator[](size_t index) const
 {
-	assert(index >= 0);
+	assert(index < m_length);
 	return m_string[index];
 }
 
 char& CMyString::operator[](size_t index)
 {
-	assert(index >= 0);
+	assert(index < m_length);
 	return m_string[index];
 }
 
@@ -239,4 +345,64 @@ std::ostream& operator<<(std::ostream &stream, const CMyString &str)
 	stream << str.GetStringData();
 
 	return stream;
+}
+
+CMyString::iterator CMyString::begin()
+{
+	return iterator(m_string);
+}
+
+CMyString::iterator CMyString::end()
+{
+	return iterator(m_string + m_length);
+}
+
+CMyString::const_iterator CMyString::begin() const
+{
+	return const_iterator(m_string);
+}
+
+CMyString::const_iterator CMyString::end() const
+{
+	return const_iterator(m_string + m_length);
+}
+
+CMyString::const_iterator CMyString::cbegin() const
+{
+	return const_iterator(m_string);
+}
+
+CMyString::const_iterator CMyString::cend() const
+{
+	return const_iterator(m_string + m_length);
+}
+
+CMyString::reverse_iterator CMyString::rbegin()
+{
+	return reverse_iterator(m_string + m_length);
+}
+
+CMyString::reverse_iterator CMyString::rend()
+{
+	return reverse_iterator(m_string);
+}
+
+CMyString::const_reverse_iterator CMyString::rbegin() const
+{
+	return const_reverse_iterator(m_string + m_length);
+}
+
+CMyString::const_reverse_iterator CMyString::rend() const
+{
+	return const_reverse_iterator(m_string);
+}
+
+CMyString::const_reverse_iterator CMyString::crbegin() const
+{
+	return const_reverse_iterator(m_string + m_length);
+}
+
+CMyString::const_reverse_iterator CMyString::crend() const
+{
+	return const_reverse_iterator(m_string);
 }
