@@ -66,8 +66,8 @@ BOOST_AUTO_TEST_CASE(TestBinaryPlus)
 		CComplex complex1(2, 5);
 		CComplex complex2(2.4, 5.2);
 		CComplex complex = complex1 + complex2;
-		BOOST_CHECK_CLOSE(complex.Re(), 4.4, EPS);
-		BOOST_CHECK_CLOSE(complex.Im(), 10.2, EPS);
+		BOOST_CHECK_CLOSE(complex.Re(), 4.4, DBL_MIN);
+		BOOST_CHECK_CLOSE(complex.Im(), 10.2, DBL_MIN);
 	}
 	{
 		CComplex complex1(2, 5);
@@ -105,8 +105,8 @@ BOOST_AUTO_TEST_CASE(TestAssigningPlus)
 		CComplex complex(2, 5);
 		CComplex complex1(2.4, 5.2);
 		complex += complex1;
-		BOOST_CHECK_CLOSE(complex.Re(), 4.4, EPS);
-		BOOST_CHECK_CLOSE(complex.Im(), 10.2, EPS);
+		BOOST_CHECK_CLOSE(complex.Re(), 4.4, DBL_MIN);
+		BOOST_CHECK_CLOSE(complex.Im(), 10.2, DBL_MIN);
 	}
 	{
 		CComplex complex(2, 5);
@@ -178,8 +178,8 @@ BOOST_AUTO_TEST_CASE(TestMultiply)
 		CComplex complex1(1, 2);
 		CComplex complex2(2, 3);
 		CComplex complex = complex1 * complex2;
-		BOOST_CHECK_CLOSE(complex.Re(), -4, EPS);
-		BOOST_CHECK_CLOSE(complex.Im(), 7, EPS);
+		BOOST_CHECK_CLOSE(complex.Re(), -4, DBL_MIN);
+		BOOST_CHECK_CLOSE(complex.Im(), 7, DBL_MIN);
 	}
 	{
 		CComplex complex1(1.8, -2.3);
@@ -190,8 +190,9 @@ BOOST_AUTO_TEST_CASE(TestMultiply)
 	{
 		CComplex complex1(1.8, -2.3);
 		CComplex complex = 3.4 * complex1;
-		BOOST_CHECK_CLOSE(complex.Re(), 6.12, EPS);
-		BOOST_CHECK_CLOSE(complex.Im(), -7.82, EPS);
+		BOOST_CHECK_CLOSE(complex.Re(), 6.12, DBL_MIN);
+		BOOST_CHECK_CLOSE_FRACTION(complex.Im(), -7.82, DBL_MIN);
+		//BOOST_CHECK_CLOSE(complex.Im(), -7.82, DBL_MIN);
 	}
 }
 
