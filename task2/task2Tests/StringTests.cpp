@@ -232,6 +232,39 @@ BOOST_AUTO_TEST_CASE(IteratorCheck)
 		}
 		BOOST_CHECK_EQUAL(i, str1.GetLength());
 	}
+
+	{
+		CMyString str1("string");
+		auto it = str1.begin();
+		for (size_t i = 0; i < 6; i++)
+		{
+			BOOST_CHECK_EQUAL(*(it + i), str1[i]);
+		}
+	}
+
+	{
+		CMyString str1("string");
+		auto it = str1.begin();
+		for (size_t i = 0; i < 6; i++)
+		{
+			BOOST_CHECK_EQUAL(*(i + it), str1[i]);
+		}
+	}
+
+	{
+		CMyString str1("string");
+		auto start = str1.begin(), end = str1.end();
+		BOOST_CHECK_EQUAL(end - start, 6);
+	}
+
+	{
+		CMyString str1("string");
+		auto it = str1.cbegin();
+		for (size_t i = 0; i < 6; i++)
+		{
+			BOOST_CHECK_EQUAL(it[i], str1[i]);
+		}
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()

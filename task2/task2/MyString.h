@@ -17,8 +17,12 @@ public:
 		self_type operator++(int junk);
 		self_type& operator--();
 		self_type operator--(int junk);
-		value_type& operator*() const;
-		value_type* operator->() const;
+		self_type operator+(size_t num);
+		friend self_type operator+(size_t num, const self_type &it);
+		reference operator*() const;
+		pointer operator->() const;
+		difference_type operator-(self_type it) const;
+		reference operator[](size_t index) const;
 		bool operator==(const self_type& rhs) const;
 		bool operator!=(const self_type& rhs) const;
 	private:
@@ -30,8 +34,8 @@ public:
 	public:
 		typedef const_iterator self_type;
 		typedef char value_type;
-		typedef char& reference;
-		typedef char* pointer;
+		typedef const char& reference;
+		typedef const char* pointer;
 		typedef int difference_type;
 		typedef std::forward_iterator_tag iterator_category;
 
@@ -40,8 +44,12 @@ public:
 		self_type operator++(int junk);
 		self_type& operator--();
 		self_type operator--(int junk);
-		const value_type& operator*() const;
-		const value_type* operator->() const;
+		self_type operator+(size_t num);
+		friend self_type operator+(size_t num, const self_type &it);
+		reference operator*() const;
+		pointer operator->() const;
+		difference_type operator-(self_type it) const;
+		reference operator[](size_t index) const;
 		bool operator==(const self_type& rhs) const;
 		bool operator!=(const self_type& rhs) const;
 	private:

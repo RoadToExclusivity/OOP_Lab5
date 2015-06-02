@@ -15,7 +15,7 @@ void CMyString::ReallocMemory(size_t newSize)
 	{
 		while (newSize > m_curBufferSize)
 		{
-			m_curBufferSize <<= 1;
+			m_curBufferSize = (m_curBufferSize >> 1) * 3;
 		}
 		char *newString = (char*)realloc(m_string, m_curBufferSize);
 		assert(newString != nullptr);
@@ -56,14 +56,29 @@ CMyString::iterator::self_type CMyString::iterator::operator--(int junk)
 	return i;
 }
 
-CMyString::iterator::value_type& CMyString::iterator::operator*() const
+CMyString::iterator::self_type CMyString::iterator::operator+(size_t num)
+{
+	return ptr_ + num;
+}
+
+CMyString::iterator::reference CMyString::iterator::operator*() const
 { 
 	return *ptr_; 
 }
 
-CMyString::iterator::value_type* CMyString::iterator::operator->() const
+CMyString::iterator::difference_type CMyString::iterator::operator-(self_type it) const
+{
+	return ptr_ - it.ptr_;
+}
+
+CMyString::iterator::pointer CMyString::iterator::operator->() const
 { 
 	return ptr_;
+}
+
+CMyString::iterator::reference CMyString::iterator::operator[](size_t index) const
+{
+	return ptr_[index];
 }
 
 bool CMyString::iterator::operator==(const self_type& rhs) const
@@ -74,6 +89,11 @@ bool CMyString::iterator::operator==(const self_type& rhs) const
 bool CMyString::iterator::operator!=(const self_type& rhs) const
 { 
 	return ptr_ != rhs.ptr_; 
+}
+
+CMyString::iterator operator+(size_t num, const CMyString::iterator &it)
+{
+	return it.ptr_ + num;
 }
 
 CMyString::const_iterator::const_iterator(pointer ptr)
@@ -109,14 +129,29 @@ CMyString::const_iterator::self_type CMyString::const_iterator::operator--(int j
 	return i;
 }
 
-const CMyString::const_iterator::value_type& CMyString::const_iterator::operator*() const
+CMyString::const_iterator::self_type CMyString::const_iterator::operator+(size_t num)
+{
+	return ptr_ + num;
+}
+
+CMyString::const_iterator::reference CMyString::const_iterator::operator*() const
 {
 	return *ptr_;
 }
 
-const CMyString::const_iterator::value_type* CMyString::const_iterator::operator->() const
+CMyString::const_iterator::pointer CMyString::const_iterator::operator->() const
 {
 	return ptr_;
+}
+
+CMyString::const_iterator::difference_type CMyString::const_iterator::operator-(self_type it) const
+{
+	return ptr_ - it.ptr_;
+}
+
+CMyString::const_iterator::reference CMyString::const_iterator::operator[](size_t index) const
+{
+	return ptr_[index];
 }
 
 bool CMyString::const_iterator::operator==(const self_type& rhs) const
@@ -127,6 +162,11 @@ bool CMyString::const_iterator::operator==(const self_type& rhs) const
 bool CMyString::const_iterator::operator!=(const self_type& rhs) const
 {
 	return ptr_ != rhs.ptr_;
+}
+
+CMyString::const_iterator operator+(size_t num, const CMyString::const_iterator &it)
+{
+	return it.ptr_ + num;
 }
 
 CMyString::CMyString()
@@ -336,12 +376,6 @@ std::istream& operator>>(std::istream &stream, CMyString &str)
 
 std::ostream& operator<<(std::ostream &stream, const CMyString &str)
 {
-	/*unsigned len = str.GetLength();
-	const char *s = str.GetStringData();
-	for (unsigned i = 0; i < len; ++i)
-	{
-		stream << str.GetStringData();
-	}*/
 	stream << str.GetStringData();
 
 	return stream;
